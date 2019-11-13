@@ -1,0 +1,25 @@
+{
+  "name": "grocerylistpage",
+  "version": "1.0.0",
+  "description": "WebDev3_Activity_By_Pair",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.7.5",
+    "sweetalert": "^2.1.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ChristianGigante/GroceryListPage.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ChristianGigante/GroceryListPage/issues"
+  },
+  "homepage": "https://github.com/ChristianGigante/GroceryListPage#readme"
+}

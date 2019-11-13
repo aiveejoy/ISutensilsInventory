@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <title>PN Utensils Inventory</title>
+  </head>
+  <style>
+    img {
+      width: 500px;
+      height: 913px;
+    }
+    h1 {
+      font-size: 300%;
+    }
+    button {
+      margin-left: 130%;
+    }
+  </style>
+
+  <body>
+    <div id="Home">
+      <div>
+        <img
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZFnEUti36f_sFiPH8T_HuEzEu5Bd-SWynZj8eXTuzv7UcuAsD&s"
+          class="float-left"
+          alt="home image"
+        />
+      </div>
+      <div class="container">
+        <center>
+          <br /><br /><br /><br /><br />
+          <h1 class="p-4 bg-secondary text-white">
+            Passerelles Numeriques Kitchen Utensils Inventory
+          </h1>
+        </center>
+      </div>
+      <div class="float-left" id="btn">
+        <div>
+          <center>
+            <br /><br /><br />
+            <button type="button" class="btn btn-primary btn-lg btn-block" id="addNew">
+              Add New Utensils
+            </button>
+            <br /><br />
+            <button
+              type="button"
+              class="btn btn-success btn-lg btn-block"
+              id="viewList"
+            >
+              View List of Utensils
+            </button>
+          </center>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+    $(document).ready(function() {
+      $("#viewList").click(function() {});
+    });
+  </script>
+</html>

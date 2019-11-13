@@ -1,0 +1,131 @@
+
+
+
+// //Set up default mongoose connection
+// const mongoDB = 'mongodb://127.0.0.1/test';
+// mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
+
+// //Get the default connection
+// var db = mongoose.connection;
+
+// //Bind connection to error event (to get notification of connection errors)
+// db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+
+// //open connection
+// db.once('open', function () {
+//   // we're connected!
+//   console.log('connected!')
+// });
+
+// //Define a schema
+// var Schema = mongoose.Schema;
+
+// var Shop = new Schema({
+//   item: String,
+//   quantity: Number,
+//   priority: String
+// });
+
+// // Compile model from schema
+// var Item = mongoose.model('Item', Shop);
+
+// // Create an instance of model SomeModel
+// var newItem = new Item({ item: 'zonrox', quantity: 12, priority: '3' });
+
+// // Save the new model instance, passing a callback
+// newItem.save(function (err) {
+//   if (err) return handleError(err);
+//   // saved!
+//   console.log('save!');
+// });
+
+
+//OrElse
+//   SomeModel.create({ name: 'also_awesome' }, function (err, awesome_instance) {
+//     if (err) return handleError(err);
+//     // saved!
+//   });
+
+
+
+#yol
+
+app.get("/item/retrieve/:items",(req , res)=>{
+var item = req.params.items
+var search = {}
+if(item !== "all"){
+search.id = item
+}
+Items.find(search,(err , content)=>{
+res.end(contents)
+})
+})
+
+//view all items
+$.ajax({
+ url: 'item/retrieve/all',
+ type:'get',
+ success: (res)=>{
+     emptyTable();
+     addrow(res)
+}
+})
+
+//search
+onclick button
+var id = $(this).attr("id)
+
+$.ajax({
+ url: 'item/retrieve/'+id,
+ type:'get',
+ success: (res)=>{
+     emptyTable();
+     addrow(res)
+}
+})
+app.get("/item/retrieve/:items",(req , res)=>{
+var item = req.params.items
+var search = {}
+if(item !== "all"){
+search.id = item
+}
+Items.find(search,(err , content)=>{
+res.end(contents)
+})
+})
+
+//view all items
+$.ajax({
+ url: 'item/retrieve/all',
+ type:'get',
+ success: (res)=>{
+     emptyTable();
+     addrow(res)
+}
+})
+
+//search
+onclick button
+var id = $(input).val()
+
+$.ajax({
+ url: 'item/retrieve/'+id,
+ type:'get',
+ success: (res)=>{
+     emptyTable();
+     addrow(res)
+}
+})
+
+
+
+
+
+// const NoteSchema = mongoose.Schema({
+//     title: String,
+//     content: String
+// }, {
+//     timestamps: true
+// });
+
+// module.exports = mongoose.model('Note', NoteSchema);

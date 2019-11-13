@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <title>PN Utensils Inventory</title>
+</head>
+<style>
+    body {
+        color: #000;
+        font-size: 20px;
+        line-height: 135%;
+        width: 100%;
+        word-break: break-word;
+        width: 80%;
+        margin-left: 10%;
+        background: url("https://previews.123rf.com/images/tbralnina/tbralnina1705/tbralnina170500074/78015329-kitchen-background-with-towel-and-cooking-tools-top-view-copy-space-.jpg");
+        background-repeat: no-repeat;
+        background-size: cover; 
+    }
+</style>
+
+<body>
+    <center>
+        <div style="margin-top: 200px;display:none;width : 400px;" id="showForm" class="card bg-secondary container">
+            <div class="card-header text-white">Add Utensils</div>
+            <div class="card-body text-center ">
+                <form action="" class="form was-validated">
+                    <input type="text" class="form-control" name="item" placeholder="Name" required autofocus><br>
+                    <input type="number" class="form-control" name="quantity" placeholder="Quantity"
+                        required><br>
+                    <input type="date" class="form-control" name="date" placeholder="Date" required><br>
+
+                </form>
+            </div>
+            <div class="card-footer">
+                <button id="addItem" class="btn btn-success">ADD</button>
+                <button id="cancel" class="btn btn-danger">CANCEL</button>
+            </div>
+        </div>
+
+        <br>
+        <div style="margin-top: 200px; display:none;width : 400px;" id="updateForm" class="card bg-secondary container">
+            <div class="card-header text-white">Update Item</div>
+            <div class="card-body text-center">
+                <form action="" class="form was-validated">
+                    <input type="text" class="form-control" name="itemUpdate" required autofocus><br>
+                    <input type="number" class="form-control" name="quantityUpdate" required><br>
+                    <input type="date" class="form-control" name="priorityUpdate" required><br>
+                    <input type="number" class="form-control" name="IQUpdate" required>
+                </form>
+            </div>
+            <div class="card-footer">
+                <button id="updateItem" class="btn btn-success">UPDATE</button>
+                <button id="updateCancel" class="btn btn-danger">CANCEL</button>
+            </div>
+        </div>
+    </center>
+
+    <div class="container" style="display:inline;">
+        <div id="showTable">
+            <br><br>
+            <button id="add" class="btn btn-outline-primary btn-lg" data-toggle="modal" data-target="#myModal">ADD NEW
+            </button>
+            <br><br>
+            <table class="table text-center table-hover">
+                <thead class="thead thead-light">
+                    <th>Name(UTENSILS)</th>
+                    <th>Quantity</th>
+                    <th>Date of Input</th>
+                    <th>Inventory Quantity</th>
+                    <th>Lacking</th>
+                    <th>Options</th>
+
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+
+        $(document).ready(function () {
+            var status = true;
+
+            function retrieveAllData() {
+                $.ajax({
+                    url: "item/retrieve/all",
+                    crossDomain: true,
+                    type: "GET",
+                    success: function (data) {
+                        $('tbody').empty();
+                        data.forEach(element => {
+                            addRow(element);
+                        });
+                    },
+                    error: function (e) {
+                        console.log(e)
+                    }
+                })
+            }
+
+            retrieveAllData();
+
+            $("#add").click(function (e) {
+                e.preventDefault();
+                $("#showForm").show();
+                $("#showTable").hide();
+            })
+
+            $("#cancel").on('click', function (e) {
+                e.preventDefault();
+                $("#showForm").hide();
+                $("#showTable").show();
+                let item = $('input[name="item"]').val('');
+                let quantity = $('input[name="quantity"]').val('');
+                let priority = $('input[name="date"]').val('');
+            })
+
+            $("#updateCancel").on('click', function (e) {
+                e.preventDefault();
+                $("#updateForm").hide();
+                $("#showTable").show();
+            })
+
+            function addRow(data) {
+                var tr = $("<tr>", {
+                    id: data._id,
+                    item: data.item,
+                    quantity: data.quantity,
+                    priority: data.priority,
+                    inevQ: data.inevQ,
+                    lacking: data.lacking
+                });
+                var btns = $("<div>").append($("<button>", {
+                    class: "btn btn-outline-dark btn-md edit"
+                }).text("Update"),
+                    $("<button>", {
+                        class: "btn btn-outline-danger delete btn-md",
+                    }).text("Delete")
+                )
+                $(tr).append(
+                    $("<td>").text(data.item),
+                    $("<td>").text(data.quantity),
+                    $("<td>").text(data.priority),
+                    $("<td>").text(data.inevQ),
+                    $("<td>").text(data.lacking),
+                    $("<td>").append(btns)
+                ).appendTo($('tbody'));
+            }
+
+
+
+            function checkInput(label) {
+                if (!(isNaN($(label).val()))) {
+                    alert('Item name must not be a number!');
+                    $('input[name="item"]').val('');
+                    $('input[name="quantity"]').val('');
+                    $('input[name="date"]').val('');
+
+                }
+            }
+
+            $("#addItem").on('click', function (e) {
+                e.preventDefault(e);
+                var boolean = true;
+                var item = $('input[name="item"]');
+                var quantity = $('input[name="quantity"]');
+                var priority = $('input[name="date"]');
+        
+                $('#showForm input').each(function () {
+                    if ($(this).val() == "") {
+                        boolean = false;
+                    }
+                })
+                if (boolean == true) {
+                    $.ajax({
+                        url: "item/create",
+                        crossDomain: true,
+                        type: "POST",
+                        data: {
+                            item: item.val(),
+                            quantity: quantity.val(),
+                            priority: priority.val()
+                        },
+                        success: function (data) {
+                            addRow(data);
+                        },
+                        error: function (e) {
+                            console.log(e)
+                        }
+                    })
+                    item.val('');
+                    quantity.val('');
+                    priority.val('');
+                    $("#showForm").hide();
+                    $("#showTable").show();
+                }
+                else {
+                    swal({
+                        icon: "error",
+                        title: "All fields must be filled!",
+                    });
+                }
+
+            });
+
+            
+            $(document).on("click", ".delete", function () {
+                $(this).parent().parent().parent().fadeOut("slow");
+                deleteItem($(this).parent().parent().parent().attr("id"));
+            })
+
+            function deleteItem(id) {
+                $.ajax({
+                    url: "item/delete/" + id + "",
+                    crossDomain: true,
+                    type: "DELETE",
+                    success: function (data) {
+                        console.log(data);
+                    },
+                    error: function (e) {
+                        console.log(e)
+                    }
+                })
+            }
+
+
+            //update Item on Tbl
+            var updateId;
+            $(document).on("click", ".edit", function () {
+                status = false;
+                retrieveOneItem($(this).parent().parent().parent().attr("id"));
+                updateId = $(this).parent().parent().parent().attr("id");
+                $("#updateForm").show();
+                $("#showTable").hide();
+
+            })
+
+            function updateItem(id) {
+                var itemup = $('input[name="itemUpdate"]');
+                checkInput(itemup);
+                var quantityUp = $('input[name="quantityUpdate"]');
+                var priorityup = $('input[name="priorityUpdate"]');
+                var inevQ = $('input[name="IQUpdate"]');
+                $.ajax({
+                    url: "item/update/" + id + "",
+                    crossDomain: true,
+                    type: "PUT",
+                    data: {
+                        item: itemup.val(),
+                        quantity: quantityUp.val(),
+                        priority: priorityup.val(),
+                        inevQ: inevQ.val(),
+                        lacking: quantityUp.val()-inevQ.val()
+                    },
+                    success: function (data) {
+                    },
+                    error: function (e) {
+                        console.log(e)
+                    }
+                })
+            }
+
+            $(document).on("click", "#updateItem", function () {
+                updateItem(updateId);
+                retrieveAllData();
+                $("#updateForm").hide();
+                $("#showTable").show();
+            })
+
+
+            //retrieve one item function
+            function retrieveOneItem(id) {
+                $.ajax({
+                    url: "item/retrieve/" + id + "",
+                    crossDomain: true,
+                    type: "GET",
+                    success: function (data) {
+                        $('input[name="itemUpdate"]').val(data.item);
+                        $('input[name="quantityUpdate"]').val(data.quantity);
+                        $('input[name="priorityUpdate"]').val(data.priority);
+                        $('input[name="IQUpdate"]').val(data.inevQ);
+                    },
+                    error: function (e) {
+                        console.log(e)
+                    }
+                })
+            }
+
+        });
+    </script>
+
+</body>
+
+</html>
