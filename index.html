@@ -24,7 +24,7 @@
         word-break: break-word;
         width: 80%;
         margin-left: 10%;
-        background: url("https://previews.123rf.com/images/tbralnina/tbralnina1705/tbralnina170500074/78015329-kitchen-background-with-towel-and-cooking-tools-top-view-copy-space-.jpg");
+        background: url("https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQP_LHQHPTt-nkjni1HKeaWrQuWBq-Uj1tEHdbKs3hgAAPABQET");
         background-repeat: no-repeat;
         background-size: cover; 
     }
@@ -32,8 +32,8 @@
 
 <body>
     <center>
-        <div style="margin-top: 200px;display:none;width : 400px;" id="showForm" class="card bg-secondary container">
-            <div class="card-header text-white">Add Utensils</div>
+        <div style="margin-top: 200px;display:none;width : 400px;" id="showForm" class="card bg-light container">
+            <div class="card-header text-success">Add Utensils</div>
             <div class="card-body text-center ">
                 <form action="" class="form was-validated">
                     <input type="text" class="form-control" name="item" placeholder="Name" required autofocus><br>
@@ -44,18 +44,18 @@
                 </form>
             </div>
             <div class="card-footer">
-                <button id="addItem" class="btn btn-success">ADD</button>
+                <button id="addItem" class="btn btn-primary">ADD</button>
                 <button id="cancel" class="btn btn-danger">CANCEL</button>
             </div>
         </div>
 
         <br>
-        <div style="margin-top: 200px; display:none;width : 400px;" id="updateForm" class="card bg-secondary container">
-            <div class="card-header text-white">Update Item</div>
+        <div style="margin-top: 200px; display:none;width : 400px;" id="updateForm" class="card bg-info container">
+            <div class="card-header text-default">Update Item</div>
             <div class="card-body text-center">
-                <form action="" class="form was-validated">
-                    <input type="text" class="form-control" name="itemUpdate" required autofocus><br>
-                    <input type="number" class="form-control" name="quantityUpdate" required><br>
+                <form action="" class="form">
+                    <input type="text" class="form-control" name="itemUpdate" required><br>
+                    <input type="number" class="form-control" name="quantityUpdate" disabled><br>
                     <input type="date" class="form-control" name="priorityUpdate" required><br>
                     <input type="number" class="form-control" name="IQUpdate" required>
                 </form>
