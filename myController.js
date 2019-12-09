@@ -20,7 +20,7 @@ module.exports.create = (req, res) => {
     newItem.save()
     .then(data => {
         res.send(data);
-        console.log(data);
+        // console.log("na save mam");
     }).catch(err => {
         res.status(500).send({
             message: err.message || "Some error occurred while creating the Item."
@@ -31,9 +31,9 @@ module.exports.create = (req, res) => {
 
 // Retrieve and return all items from the database.
 exports.findAll = (req, res) => {
-    Item.find()
+    Item.find({"dateDeleted":null})
     .then(items => {
-        console.log(items);
+        // console.log(items);
         res.send(items);
     }).catch(err => {
         res.status(500).send({
@@ -64,15 +64,38 @@ exports.findOne = (req, res, id) => {
         });
     });
 };
+exports.check = (req, res, id) => {
+    console.log("iddddddddddd--- > "+id);
+    // mongoose.set('useFindAndModify', false),
+    Item.findOne({_id: id})
+    .then(items => {
+        if(!items) {
+            return res.status(404).send({
+                message: "Note not found with id " + id
+            });            
+        }
+        res.send(items);
+        console.log(items)
+    }).catch(err => {
+        if(err.kind === 'ObjectId') {
+            return res.status(404).send({
+                message: "Note not found with id " + id
+            });                
+        }
+        return res.status(500).send({
+            message: "Error retrieving item with id " + id
+        });
+    });
+};
 
 exports.update = (req, res, id) => {
     var newQ=req.body.quantity;
-    console.log("idididid-- "+id);
-    console.log("iii-- "+req.body.item);
-    console.log("QQQQ-- "+newQ);   
-    console.log("ddd-- "+req.body.priority);
-    console.log("IQ-- "+req.body.inevQ);
-    console.log("IQ-- "+req.body.lacking);
+    // console.log("idididid-- "+id);
+    // console.log("iii-- "+req.body.item);
+    // console.log("QQQQ-- "+newQ);   
+    // console.log("ddd-- "+req.body.priority);
+    // console.log("IQ-- "+req.body.inevQ);
+    // console.log("IQ-- "+req.body.lacking);
     Item.findByIdAndUpdate(id, {
         item: req.body.item, 
         quantity: newQ,
@@ -87,6 +110,7 @@ exports.update = (req, res, id) => {
             });
         }
         res.send(items);
+        // console.log(items);
     }).catch(err => {
         if(err.kind === 'ObjectId') {
             return res.status(404).send({
@@ -101,7 +125,10 @@ exports.update = (req, res, id) => {
 
 // Delete a items with the specified noteId in the request
 exports.delete = (req, res, id) => {
-    Item.findByIdAndRemove(id)
+    console.log("iddddddddddd--- > "+id);
+    Item.findByIdAndUpdate(id,{
+        dateDeleted: req.body.dateDeleted
+    },{new: true})
     .then(items=> {
         if(!items) {
             return res.status(404).send({

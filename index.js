@@ -19,6 +19,7 @@ app.all('/', function (req, res) {
 });
 
 
+
 // Configuring the database
 const dbConfig = 'mongodb://127.0.0.1:27017/test';
 
@@ -51,6 +52,12 @@ app.get('/item/retrieve/:id', function (req,res) {
   item.findOne(req,res,id);
 })
 
+app.get('/item/check/:id', function (req,res) {
+  console.log("id maam oh "+req.params.id)
+  let id = req.params.id;
+  item.check(req,res,id);
+})
+
 //update an item
 //item/update - POST
 app.put('/item/update/:id',function (req,res) {
@@ -60,8 +67,9 @@ app.put('/item/update/:id',function (req,res) {
 
 //remove an item
 //item/delete - DELETE
-app.delete('/item/delete/:id', function (req,res) {
+app.put('/item/datedeleted/:id', function (req,res) {
   let id = req.params.id;
+  console.log("id ni dohhh "+req.params.id);
   item.delete(req,res,id);
 })
 

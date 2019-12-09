@@ -19,10 +19,14 @@ var Shop = new Schema({
   },
   inevQ: {
     type: Number,
-    default: null
+    default: 0
   },
   lacking: {
     type:Number,
+    default: 0
+  },
+  dateDeleted: {
+    type:String,
     default: null
   }
 });

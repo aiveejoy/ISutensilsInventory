@@ -24,21 +24,40 @@
         word-break: break-word;
         width: 80%;
         margin-left: 10%;
-        background: url("https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQP_LHQHPTt-nkjni1HKeaWrQuWBq-Uj1tEHdbKs3hgAAPABQET");
-        background-repeat: no-repeat;
-        background-size: cover; 
+        /* background: url("https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQP_LHQHPTt-nkjni1HKeaWrQuWBq-Uj1tEHdbKs3hgAAPABQET"); */
+        /* background-repeat: no-repeat; */
+        /* background-size: cover;  */
+    }
+    #homeimg {
+      width: 500px;
+      height: 913px;
+    }
+   #hometitle {
+      font-size: 300%;
+    }
+    #viewList {
+      margin-left: 130%;
     }
 </style>
 
 <body>
     <center>
+        <div style="margin-top: 200px;display:none;width : 400px;" id="deleteConfirm" class="card bg-light container">
+
+            <div class="card-body text-center ">
+                <h1>Are you sure you want to delete this?</h1>
+            </div>
+            <div class="card-footer">
+                <button id="yes" class="btn btn-primary">YES</button>
+                <button id="no" class="btn btn-danger">CANCEL</button>
+            </div>
+        </div>
         <div style="margin-top: 200px;display:none;width : 400px;" id="showForm" class="card bg-light container">
             <div class="card-header text-success">Add Utensils</div>
             <div class="card-body text-center ">
                 <form action="" class="form was-validated">
                     <input type="text" class="form-control" name="item" placeholder="Name" required autofocus><br>
-                    <input type="number" class="form-control" name="quantity" placeholder="Quantity"
-                        required><br>
+                    <input type="number" class="form-control" name="quantity" placeholder="Quantity" required><br>
                     <input type="date" class="form-control" name="date" placeholder="Date" required><br>
 
                 </form>
@@ -54,10 +73,10 @@
             <div class="card-header text-default">Update Item</div>
             <div class="card-body text-center">
                 <form action="" class="form">
-                    <input type="text" class="form-control" name="itemUpdate" required><br>
-                    <input type="number" class="form-control" name="quantityUpdate" disabled><br>
-                    <input type="date" class="form-control" name="priorityUpdate" required><br>
-                    <input type="number" class="form-control" name="IQUpdate" required>
+                    <input type="text" class="form-control" name="itemUpdate" ><br>
+                    <input type="number" class="form-control" name="quantityUpdate" ><br>
+                    <input type="date" class="form-control" name="priorityUpdate" ><br>
+                    <input type="number" class="form-control" name="IQUpdate" >
                 </form>
             </div>
             <div class="card-footer">
@@ -67,8 +86,8 @@
         </div>
     </center>
 
-    <div class="container" style="display:inline;">
-        <div id="showTable">
+    <div id="showTable" class="container" style="display:none;">
+        <div >
             <br><br>
             <button id="add" class="btn btn-outline-primary btn-lg" data-toggle="modal" data-target="#myModal">ADD NEW
             </button>
@@ -88,10 +107,40 @@
             </table>
         </div>
     </div>
+    <div id="Home">
+        <div>
+            <img id="homeimg" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZFnEUti36f_sFiPH8T_HuEzEu5Bd-SWynZj8eXTuzv7UcuAsD&s"
+                class="float-left" alt="home image" />
+        </div>
+        <div class="container">
+            <center>
+                <br /><br /><br /><br /><br />
+                <h1 id="hometitle" class="p-4 bg-secondary text-white">
+                    Passerelles Numeriques Kitchen Utensils Inventory
+                </h1>
+            </center>
+        </div>
+        <div class="float-left" id="btn">
+            <div>
+                <center>
+                    <br /><br /><br />
+                    <button type="button" class="btn btn-primary btn-lg btn-block" id="addNew">
+                        Add New Utensils
+                    </button>
+                    <br /><br />
+                    <button type="button" class="btn btn-success btn-lg btn-block" id="viewList">
+                        View List of Utensils
+                    </button>
+                </center>
+            </div>
+        </div>
+    </div>
+
 
     <script>
 
         $(document).ready(function () {
+
             var status = true;
 
             function retrieveAllData() {
@@ -106,12 +155,18 @@
                         });
                     },
                     error: function (e) {
-                        console.log(e)
+                        console.log()
                     }
                 })
             }
 
             retrieveAllData();
+
+            $("#viewList").click(function (e) {
+                e.preventDefault();
+                $("#showTable").show();
+                $("#Home").hide();
+            })
 
             $("#add").click(function (e) {
                 e.preventDefault();
@@ -178,7 +233,7 @@
                 var item = $('input[name="item"]');
                 var quantity = $('input[name="quantity"]');
                 var priority = $('input[name="date"]');
-        
+
                 $('#showForm input').each(function () {
                     if ($(this).val() == "") {
                         boolean = false;
@@ -196,9 +251,11 @@
                         },
                         success: function (data) {
                             addRow(data);
+                            console.log("diri meem");
                         },
                         error: function (e) {
                             console.log(e)
+                            console.log("hey jo")
                         }
                     })
                     item.val('');
@@ -216,22 +273,38 @@
 
             });
 
-            
-            $(document).on("click", ".delete", function () {
-                $(this).parent().parent().parent().fadeOut("slow");
+            var row;
+            $(document).on("click", ".delete", function (e) {
+                $("#deleteConfirm").show();
+                $("#showTable").hide();
+                row=$(this).closest('tr');
+                // $(this).parent().parent().parent().fadeOut("slow");
                 deleteItem($(this).parent().parent().parent().attr("id"));
+            })
+            $(document).on("click", "#yes", function () {
+                $("#showTable").show();
+                $("#deleteConfirm").hide();
+                row.remove();
+                // $(this).parent().parent().parent().fadeOut("slow");
+                // deleteItem($(this).parent().parent().parent().attr("id"));
             })
 
             function deleteItem(id) {
+                var newQ=new Date();
                 $.ajax({
-                    url: "item/delete/" + id + "",
+                    url: "item/datedeleted/" + id + "",
                     crossDomain: true,
-                    type: "DELETE",
+                    type: "PUT",
+                    data: {
+                        dateDeleted: newQ
+                    },
                     success: function (data) {
-                        console.log(data);
+                        // console.log(data);
+                        console.log("success sa date deleted maam!");
                     },
                     error: function (e) {
                         console.log(e)
+                        console.log("error update datedeleted mam!")
                     }
                 })
             }
@@ -263,9 +336,45 @@
                         quantity: quantityUp.val(),
                         priority: priorityup.val(),
                         inevQ: inevQ.val(),
-                        lacking: quantityUp.val()-inevQ.val()
+                        lacking: quantityUp.val() - inevQ.val()
                     },
                     success: function (data) {
+                        console.log("this are the datas" +data);
+                        swal({
+                            icon: "success",
+                            title: "SUCCESSFULLY CHANGED!",
+                        })
+                    },
+                    error: function (e) {
+                        console.log(e)
+                    }
+                })
+            }
+
+            function checkItem(id) {
+                var itemup = $('input[name="itemUpdate"]');
+                checkInput(itemup);
+                var quantityUp = $('input[name="quantityUpdate"]');
+                var priorityup = $('input[name="priorityUpdate"]');
+                var inevQ = $('input[name="IQUpdate"]');
+                $.ajax({
+                    url: "item/check/" + id + "",
+                    crossDomain: true,
+                    type: "GET",
+                    success: function (data) {
+                        if (
+                            (itemup === data.item) &&
+                            (quantityUp === quantity) &&
+                            (priorityup === priority) &&
+                            (inevQ === inevQ)
+                        ){
+                            swal({
+                        title: "NOTHING WAS CHANGED!",
+                    })
+                        }else{
+                            updateItem(updateId);
+                        }
+                        console.log("this are the datas" +data);
                     },
                     error: function (e) {
                         console.log(e)
@@ -274,7 +383,8 @@
             }
 
             $(document).on("click", "#updateItem", function () {
-                updateItem(updateId);
+                console.log("ang id dae "+updateId)
+                checkItem(updateId);
                 retrieveAllData();
                 $("#updateForm").hide();
                 $("#showTable").show();
