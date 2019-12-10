@@ -2,6 +2,9 @@
 <html lang="en">
 
 <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.8/css/jquery.dataTables.min.css">
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,9 +13,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 
     <!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <!-- <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script> -->
     <title>PN Utensils Inventory</title>
 </head>
 <style>
@@ -92,7 +95,9 @@
             <button id="add" class="btn btn-outline-primary btn-lg" data-toggle="modal" data-target="#myModal">ADD NEW
             </button>
             <br><br>
-            <table class="table text-center table-hover">
+            <table class="table text-center table-hover" data-pagination="true"  data-id-field="name"
+            data-page-list="[5, 10, 25, 50, 100, ALL]"
+            data-page-size="5">
                 <thead class="thead thead-light">
                     <th>Name(UTENSILS)</th>
                     <th>Quantity</th>
@@ -164,6 +169,7 @@
 
             $("#viewList").click(function (e) {
                 e.preventDefault();
+                $(".table").DataTable({"pagingType": "simple"});
                 $("#showTable").show();
                 $("#Home").hide();
             })
@@ -274,20 +280,26 @@
             });
 
             var row;
+            var itemID;
             $(document).on("click", ".delete", function (e) {
                 $("#deleteConfirm").show();
                 $("#showTable").hide();
                 row=$(this).closest('tr');
                 // $(this).parent().parent().parent().fadeOut("slow");
-                deleteItem($(this).parent().parent().parent().attr("id"));
+                itemID=$(this).parent().parent().parent().attr("id");
             })
             $(document).on("click", "#yes", function () {
                 $("#showTable").show();
                 $("#deleteConfirm").hide();
                 row.remove();
                 // $(this).parent().parent().parent().fadeOut("slow");
-                // deleteItem($(this).parent().parent().parent().attr("id"));
+                deleteItem(itemID);
             })
+            $(document).on("click", "#no", function () {
+                $("#showTable").show();
+                $("#deleteConfirm").hide();
+            })
+
 
             function deleteItem(id) {
                 var newQ=new Date();
@@ -365,7 +377,7 @@
                         if (
                             (itemup === data.item) &&
                             (quantityUp === quantity) &&
-                            (priorityup === priority) &&
+                            (priorityup === moment(priority).format('MM/DD/YYYY')) &&
                             (inevQ === inevQ)
                         ){
                             swal({
