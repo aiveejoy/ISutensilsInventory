@@ -58,8 +58,8 @@
         <div style="margin-top: 200px;display:none;width : 400px;" id="showForm" class="card bg-light container">
             <div class="card-header text-success">Add Utensils</div>
             <div class="card-body text-center ">
-                <form action="" class="form was-validated">
-                    <input type="text" class="form-control" name="item" placeholder="Name" required autofocus><br>
+                <form action="" class="form was-validated" id="additemForm">
+                    <input id="itemname" type="text" class="form-control" name="item" placeholder="Name" required autofocus><br>
                     <input type="number" class="form-control" name="quantity" placeholder="Quantity" required><br>
                     <input type="date" class="form-control" name="date" placeholder="Date" required><br>
 
@@ -95,9 +95,7 @@
             <button id="add" class="btn btn-outline-primary btn-lg" data-toggle="modal" data-target="#myModal">ADD NEW
             </button>
             <br><br>
-            <table class="table text-center table-hover" data-pagination="true"  data-id-field="name"
-            data-page-list="[5, 10, 25, 50, 100, ALL]"
-            data-page-size="5">
+            <table class="table text-center table-hover"  >
                 <thead class="thead thead-light">
                     <th>Name(UTENSILS)</th>
                     <th>Quantity</th>
@@ -129,10 +127,6 @@
             <div>
                 <center>
                     <br /><br /><br />
-                    <button type="button" class="btn btn-primary btn-lg btn-block" id="addNew">
-                        Add New Utensils
-                    </button>
-                    <br /><br />
                     <button type="button" class="btn btn-success btn-lg btn-block" id="viewList">
                         View List of Utensils
                     </button>
@@ -169,7 +163,7 @@
 
             $("#viewList").click(function (e) {
                 e.preventDefault();
-                $(".table").DataTable({"pagingType": "simple"});
+                $(".table").DataTable();
                 $("#showTable").show();
                 $("#Home").hide();
             })
@@ -225,6 +219,10 @@
 
             function checkInput(label) {
                 if (!(isNaN($(label).val()))) {
+                    // swal({
+                    //     icon: "error",
+                    //     title: "Item name must not a number!",
+                    // });
                     alert('Item name must not be a number!');
                     $('input[name="item"]').val('');
                     $('input[name="quantity"]').val('');
@@ -234,9 +232,11 @@
             }
 
             $("#addItem").on('click', function (e) {
+                
                 e.preventDefault(e);
                 var boolean = true;
                 var item = $('input[name="item"]');
+                checkInput(item);
                 var quantity = $('input[name="quantity"]');
                 var priority = $('input[name="date"]');
 
@@ -245,6 +245,7 @@
                         boolean = false;
                     }
                 })
+
                 if (boolean == true) {
                     $.ajax({
                         url: "item/create",
@@ -264,6 +265,10 @@
                             console.log("hey jo")
                         }
                     })
+                    swal({
+                        icon: "success",
+                        title: "SUCCESFULLY ADDED!",
+                    });
                     item.val('');
                     quantity.val('');
                     priority.val('');
@@ -275,7 +280,10 @@
                         icon: "error",
                         title: "All fields must be filled!",
                     });
-                }
+                };
+                $(".table").DataTable().reload();
+                
+                
 
             });
 
@@ -294,6 +302,10 @@
                 row.remove();
                 // $(this).parent().parent().parent().fadeOut("slow");
                 deleteItem(itemID);
+                swal({
+                    icon: "success",
+                    title: "SUCCESFULLY DELETED!"
+                });
             })
             $(document).on("click", "#no", function () {
                 $("#showTable").show();
@@ -397,7 +409,6 @@
             $(document).on("click", "#updateItem", function () {
                 console.log("ang id dae "+updateId)
                 checkItem(updateId);
-                retrieveAllData();
                 $("#updateForm").hide();
                 $("#showTable").show();
             })
