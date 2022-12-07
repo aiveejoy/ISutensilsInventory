@@ -4,7 +4,7 @@
   "description": "WebDev3_Activity_By_Pair",
   "main": "index.js",
   "dependencies": {
-    "express": "^4.17.1",
+    "express": "^4.18.2",
     "mongoose": "^5.7.5",
     "sweetalert": "^2.1.2"
   },
